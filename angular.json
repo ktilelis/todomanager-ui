@@ -70,6 +70,15 @@
                 "test": {
                     "builder": "@angular-builders/jest:run",
                     "options": {}
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "src/**/*.ts",
+                            "src/**/*.html"
+                        ]
+                    }
                 }
             }
         }
