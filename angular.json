@@ -25,7 +25,8 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.css"
+                          "@angular/material/prebuilt-themes/azure-blue.css",
+                          "src/styles.css"
                         ]
                     },
                     "configurations": {
@@ -42,7 +43,13 @@
                                     "maximumError": "8kB"
                                 }
                             ],
-                            "outputHashing": "all"
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environment/environment.prod.ts"
+                                }
+                            ]
                         },
                         "development": {
                             "optimization": false,
@@ -61,6 +68,9 @@
                         "development": {
                             "buildTarget": "todo-ui:build:development"
                         }
+                    },
+                    "options": {
+                        "proxyConfig": "proxy.conf.json"
                     },
                     "defaultConfiguration": "development"
                 },
