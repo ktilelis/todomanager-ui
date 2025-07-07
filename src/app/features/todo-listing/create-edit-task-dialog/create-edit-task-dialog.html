@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{ data.isCreate ? 'Create task' : 'Edit task' }}</h2>
+<mat-dialog-content class="form-container">
+    <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Task title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Task description" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button matButton mat-dialog-close>Cancel</button>
+    <button matButton mat-dialog-close cdkFocusInitial>Save</button>
+</mat-dialog-actions>
