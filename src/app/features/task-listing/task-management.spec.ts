@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
-import { TodoManagementService } from './todo-management.service';
+import { TaskManagementService } from './task-management.service';
 import { provideHttpClient } from '@angular/common/http';
 import { PagedResponse } from '@shared/models';
-import { TodoItem } from './models/todo-item-model';
+import { Task } from './models/task-model';
 
-describe('TodoManagementService', () => {
-    let service: TodoManagementService;
+describe('TaskManagementService', () => {
+    let service: TaskManagementService;
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [provideHttpClient(), provideHttpClientTesting(), TodoManagementService]
+            providers: [provideHttpClient(), provideHttpClientTesting(), TaskManagementService]
         });
 
-        service = TestBed.inject(TodoManagementService);
+        service = TestBed.inject(TaskManagementService);
         httpMock = TestBed.inject(HttpTestingController);
     });
 
@@ -28,7 +28,7 @@ describe('TodoManagementService', () => {
     });
 
     it('should call GET and return todos', () => {
-        const mockResponse: PagedResponse<TodoItem> = {
+        const mockResponse: PagedResponse<Task> = {
             content: [{ id: 1, title: 'Test Todo', description: 'description' }],
             page: {
                 size: 20,
