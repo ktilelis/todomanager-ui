@@ -1,5 +1,7 @@
 export interface TodoItem {
-    id: number;
+    id?: number;
     title: string;
     description?: string;
+    expiresAt?: Date;
+    isDone?: boolean;
 }
