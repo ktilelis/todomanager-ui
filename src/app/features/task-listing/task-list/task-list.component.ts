@@ -5,21 +5,21 @@ import { MatIcon } from '@angular/material/icon';
 import { filter, first, map, switchMap } from 'rxjs';
 import { CreateEditTaskDialog } from '../create-edit-task-dialog/create-edit-task-dialog';
 import { CreateOrEditDialogPayload } from '../models/create-edit-dialog-payload';
-import { TodoItem } from '../models/todo-item-model';
-import { TodoManagementService } from '../todo-management.service';
+import { Task } from '../models/task-model';
+import { TaskManagementService } from '../task-management.service';
 
 @Component({
     selector: 'tm-todo-listing',
     imports: [MatMiniFabButton, MatIcon, MatDialogModule],
-    templateUrl: './todo-listing.component.html',
-    styleUrl: './todo-listing.component.css',
+    templateUrl: './task-list.component.html',
+    styleUrl: './task-list.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodoListingComponent {
-    private todoManagementService = inject(TodoManagementService);
+export class TaskListComponent {
+    private todoManagementService = inject(TaskManagementService);
     protected readonly dialog = inject(MatDialog);
 
-    private readonly _items = signal<TodoItem[]>([]);
+    private readonly _items = signal<Task[]>([]);
     protected readonly tasks = this._items.asReadonly();
 
     constructor() {
@@ -35,16 +35,15 @@ export class TodoListingComponent {
     }
 
     showAddDialog() {
-        const dialogRef = this.dialog.open<
+        const dialogRef = this.dialog.open<CreateEditTaskDialog, CreateOrEditDialogPayload, Task>(
             CreateEditTaskDialog,
-            CreateOrEditDialogPayload,
-            TodoItem
-        >(CreateEditTaskDialog, { data: { isCreate: true } });
+            { data: { isCreate: true } }
+        );
         dialogRef
             .afterClosed()
             .pipe(
                 first(),
-                filter((task): task is TodoItem => !!task),
+                filter((task): task is Task => !!task),
                 switchMap((task) => this.todoManagementService.createTodo(task))
             )
             .subscribe((task) => this._items.update((tasks) => [task, ...tasks]));

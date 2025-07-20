@@ -6,7 +6,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { CreateOrEditDialogPayload } from '../models/create-edit-dialog-payload';
-import { TodoItem } from '../models/todo-item-model';
+import { Task } from '../models/task-model';
 
 type TaskForm = {
     title: FormControl<string>;
@@ -34,7 +34,7 @@ export class CreateEditTaskDialog {
     data = inject<CreateOrEditDialogPayload>(MAT_DIALOG_DATA);
 
     private fb = inject(FormBuilder);
-    private dialogRef = inject<MatDialogRef<CreateEditTaskDialog, TodoItem>>(MatDialogRef);
+    private dialogRef = inject<MatDialogRef<CreateEditTaskDialog, Task>>(MatDialogRef);
 
     protected form = this.fb.group<TaskForm>({
         title: this.fb.nonNullable.control('', {
@@ -58,7 +58,7 @@ export class CreateEditTaskDialog {
             ...formValue,
             description: formValue.description ?? undefined,
             expiresAt: formValue.expiresAt ? extractDate(formValue.expiresAt) : undefined
-        } as TodoItem;
+        } as Task;
 
         this.dialogRef.close(result);
     }

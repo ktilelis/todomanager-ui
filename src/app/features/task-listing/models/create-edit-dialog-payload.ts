@@ -1,6 +1,6 @@
-import { TodoItem } from './todo-item-model';
+import { Task } from './task-model';
 
 export interface CreateOrEditDialogPayload {
-    task?: TodoItem;
+    task?: Task;
     isCreate: boolean;
 }

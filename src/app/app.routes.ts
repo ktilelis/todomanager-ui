@@ -9,8 +9,8 @@ export const routes: Routes = [
     {
         path: 'tasks',
         loadComponent: () =>
-            import('./features/todo-listing/todo-listing/todo-listing.component').then(
-                (c) => c.TodoListingComponent
+            import('./features/task-listing/task-list/task-list.component').then(
+                (c) => c.TaskListComponent
             )
     }
 ];

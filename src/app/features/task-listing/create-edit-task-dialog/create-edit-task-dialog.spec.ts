@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateOrEditDialogPayload } from '../models/create-edit-dialog-payload';
-import { TodoItem } from '../models/todo-item-model';
+import { Task } from '../models/task-model';
 import { CreateEditTaskDialog } from './create-edit-task-dialog';
 
 describe('CreateEditTaskDialog', () => {
@@ -79,7 +79,7 @@ describe('CreateEditTaskDialog', () => {
 
         component.save();
 
-        const expected: TodoItem = {
+        const expected: Task = {
             title: 'Title',
             description: 'Desc',
             expiresAt: new Date(Date.UTC(2025, 6, 19, 23, 59, 59))
