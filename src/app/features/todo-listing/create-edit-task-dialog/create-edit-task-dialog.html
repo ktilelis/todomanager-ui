@@ -1,16 +1,23 @@
 <h2 mat-dialog-title>{{ data.isCreate ? 'Create task' : 'Edit task' }}</h2>
-<mat-dialog-content class="form-container">
+<mat-dialog-content class="form-container" [formGroup]="form">
     <mat-form-field appearance="outline">
         <mat-label>Title</mat-label>
-        <input matInput placeholder="Task title" />
+        <input matInput placeholder="Task title" formControlName="title" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Description</mat-label>
-        <input matInput placeholder="Task description" />
+        <textarea matInput placeholder="Task description" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Complete by</mat-label>
+        <input matInput [matDatepicker]="completeByDatepicker" formControlName="expiresAt" />
+        <mat-datepicker-toggle matIconSuffix [for]="completeByDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #completeByDatepicker disabled="false"></mat-datepicker>
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button matButton mat-dialog-close>Cancel</button>
-    <button matButton mat-dialog-close cdkFocusInitial>Save</button>
+    <button matButton mat-dialog-close id="cancelTaskBtn">Cancel</button>
+    <button matButton mat-dialog-close [disabled]="form.invalid" (click)="save()" id="saveTaskBtn">Save</button>
 </mat-dialog-actions>

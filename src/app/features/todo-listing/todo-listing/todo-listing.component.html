@@ -1,9 +1,9 @@
 <button matMiniFab (click)="showAddDialog()">
     <mat-icon>add</mat-icon>
 </button>
-@if (todoItems().length > 0) {
+@if (tasks().length > 0) {
     <ul>
-        @for (todoItem of todoItems(); track todoItem.id) {
+        @for (todoItem of tasks(); track todoItem.id) {
             <li [id]="todoItem.id">{{ todoItem.title }}</li>
         }
     </ul>

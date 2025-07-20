@@ -1,36 +1,52 @@
-import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { map } from 'rxjs';
+import { filter, first, map, switchMap } from 'rxjs';
 import { CreateEditTaskDialog } from '../create-edit-task-dialog/create-edit-task-dialog';
+import { CreateOrEditDialogPayload } from '../models/create-edit-dialog-payload';
 import { TodoItem } from '../models/todo-item-model';
 import { TodoManagementService } from '../todo-management.service';
 
 @Component({
     selector: 'tm-todo-listing',
-    imports: [MatMiniFabButton, MatIcon, MatDialogModule, CreateEditTaskDialog],
+    imports: [MatMiniFabButton, MatIcon, MatDialogModule],
     templateUrl: './todo-listing.component.html',
     styleUrl: './todo-listing.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoListingComponent {
-    protected readonly todoItems: Signal<TodoItem[]>;
-
-    protected readonly dialog = inject(MatDialog);
     private todoManagementService = inject(TodoManagementService);
+    protected readonly dialog = inject(MatDialog);
+
+    private readonly _items = signal<TodoItem[]>([]);
+    protected readonly tasks = this._items.asReadonly();
 
     constructor() {
-        this.todoItems = toSignal(
-            this.todoManagementService.getTodos().pipe(map((response) => response.content)),
-            {
-                initialValue: []
-            }
-        );
+        this.todoManagementService
+            .getTodos()
+            .pipe(
+                first(),
+                map((response) => response.content)
+            )
+            .subscribe((tasks) => {
+                this._items.set(tasks);
+            });
     }
 
     showAddDialog() {
-        this.dialog.open(CreateEditTaskDialog, { data: { isCreate: true } });
+        const dialogRef = this.dialog.open<
+            CreateEditTaskDialog,
+            CreateOrEditDialogPayload,
+            TodoItem
+        >(CreateEditTaskDialog, { data: { isCreate: true } });
+        dialogRef
+            .afterClosed()
+            .pipe(
+                first(),
+                filter((task): task is TodoItem => !!task),
+                switchMap((task) => this.todoManagementService.createTodo(task))
+            )
+            .subscribe((task) => this._items.update((tasks) => [task, ...tasks]));
     }
 }
